@@ -1,0 +1,36 @@
+[package]
+name = "server"
+version = "0.1.0"
+edition = "2021"
+
+# See more keys and their definitions at https://doc.rust-lang.org/cargo/reference/manifest.html
+
+[dependencies]
+actix-web = "4"
+mongodb = "2"
+tokio="1"
+async-graphql = "5"
+async-graphql-actix-web = "5"
+actix-cors = "0.6"
+serde_with = "3"
+jsonwebtoken = "*"
+rust-argon2 = "*"
+base64 = "0.21.2"
+
+env_logger = "^0.10"
+futures-util = "0.3"
+async-stream = "0.3"
+slab = "0.4"
+futures-channel = "0.3"
+once_cell = "1"
+futures-timer = "3"
+redis = "*"
+chrono = { version = "0.4", features = ["serde"] }
+time = { version = "0.3", features = ["serde"] }
+derive_more = "*"
+serde = { version = "*", features = ["derive"] }
+serde_json = "*"
+futures = "*"
+lazy_static = "*"
+
+toml = "*"
