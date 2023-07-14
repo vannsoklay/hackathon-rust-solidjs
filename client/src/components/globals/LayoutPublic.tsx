@@ -1,5 +1,4 @@
-import { Component, JSXElement, createMemo } from "solid-js";
-import { Outlet, useLocation } from "@solidjs/router";
+import { Outlet } from "@solidjs/router";
 import NavBar from "./NavBar";
 import { LeftBar } from "./LeftBar";
 import RightBar from "./RigthBar";

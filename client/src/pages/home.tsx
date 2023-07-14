@@ -1,8 +1,11 @@
 import { Show, type Component, For } from "solid-js";
 import Card from "../components/Card";
 import { stories } from "../api/stories";
+import { useAuth } from "../middleware/useAuth";
 
 const Home: Component = () => {
+  const { user } = useAuth();
+
   return (
     <div class="divide-y">
       <Show when={stories} fallback={<div>loading...</div>}>

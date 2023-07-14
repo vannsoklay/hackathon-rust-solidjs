@@ -22,6 +22,20 @@ html {
 @tailwind components;
 @tailwind utilities;
 
+input {
+  display: inline-block;
+  padding: 4px;
+  margin-top: 10px;
+  margin-bottom: 10px;
+}
+.error-message {
+  color: red;
+  padding: 8px;
+}
+.error-input {
+  box-shadow: 0px 0px 2px 1px red;
+}
+
 .dynamic-shadow {
   position: relative;
 }

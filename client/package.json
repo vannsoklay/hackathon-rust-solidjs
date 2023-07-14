@@ -24,6 +24,7 @@
     "@solidjs/router": "^0.8.2",
     "@tiptap/extension-bubble-menu": "^2.0.3",
     "@tiptap/starter-kit": "^2.0.3",
+    "axios": "^1.4.0",
     "react-hot-toast": "^2.4.1",
     "react-icons": "^4.10.1",
     "solid-headless": "^0.13.1",
