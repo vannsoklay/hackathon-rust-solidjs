@@ -5,6 +5,10 @@ import BubbleMenu from "@tiptap/extension-bubble-menu";
 import { createSignal, JSX, Show } from "solid-js";
 import { Toggle, Toolbar } from "solid-headless";
 
+import { createMutation } from "solid-urql";
+import { CREATE_STORY } from "../graphql/story";
+import ErrorAlert from "./ErrorAlert";
+
 function ParagraphIcon(props: JSX.IntrinsicElements["svg"]): JSX.Element {
   return (
     <svg
@@ -317,6 +321,8 @@ export default function TextEditor(): JSX.Element {
     content: CONTENT,
   }));
 
+  const [createServiceResult, createStory] = createMutation(CREATE_STORY);
+
   return (
     <div class="w-full bg-gradient-to-bl from-sky-400 to-blue-500 flex items-center justify-center">
       <div class="flex-1 m-16">
@@ -333,8 +339,15 @@ export default function TextEditor(): JSX.Element {
           onClick={() => {
             try {
               let html = container()?.innerHTML;
-              console.log("html", html);
-              
+              createStory({
+                input: {
+                  title: "hello",
+                  thumnail: "j.jpg",
+                  content: html,
+                  tags: ["test1", "test2"],
+                  status: false,
+                },
+              });
             } catch (e) {
               console.log("e", e);
             }
@@ -342,6 +355,9 @@ export default function TextEditor(): JSX.Element {
         >
           Save
         </button>
+        <Show when={createServiceResult().error}>
+          <ErrorAlert />
+        </Show>
         <div
           class="h-[80vh] bg-white overflow-y-scroll rounded-lg"
           ref={setContainer}

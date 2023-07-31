@@ -1,5 +1,5 @@
-import { Component, createSignal } from "solid-js";
-import { useRoutes, Link } from "@solidjs/router";
+import { Component } from "solid-js";
+import { useRoutes } from "@solidjs/router";
 import { router } from "./utils/router";
 import { AppProvider } from "./middleware/useAuth";
 

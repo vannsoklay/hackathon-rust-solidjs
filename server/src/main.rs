@@ -10,7 +10,7 @@ mod utils;
 
 use crate::graphql::{mutation::MutationRoot, query::QueryRoot, subscription::SubscriptionRoot};
 use crate::middleware::context::AppContext;
-use crate::router::graphql::{index, index_graphiql, index_ws};
+use crate::router::graphql::{private_index, public_index, index_graphiql, index_ws};
 use actix_cors::Cors;
 use actix_web::{
     guard, http,
@@ -59,7 +59,11 @@ async fn main() -> std::io::Result<()> {
         redis_client: redis_client.to_owned()
     };
 
-    let schema = Schema::build(QueryRoot, MutationRoot, SubscriptionRoot)
+    let private_schema = Schema::build(QueryRoot, MutationRoot, SubscriptionRoot)
+        .data(context.to_owned())
+        .finish();
+
+    let public_schema = Schema::build(graphql::public::query::QueryRoot, MutationRoot, SubscriptionRoot)
         .data(context.to_owned())
         .finish();
 
@@ -78,7 +82,8 @@ async fn main() -> std::io::Result<()> {
             .supports_credentials()
             .max_age(3600);
         App::new()
-            .app_data(Data::new(schema.clone()))
+            .app_data(Data::new(private_schema.clone()))
+            .app_data(Data::new(public_schema.clone()))
             .app_data(Data::new(context.to_owned()))
             .wrap(cors)
             .service(resource("/api/signup").guard(guard::Post()).to(register_user_handler))
@@ -86,7 +91,8 @@ async fn main() -> std::io::Result<()> {
             .service(resource("/api/refresh").guard(guard::Get()).to(refresh_access_token_handler))
             .service(resource("/api/logout").guard(guard::Get()).to(logout_handler))
             .service(resource("/api/me").guard(guard::Get()).to(get_me_handler))
-            .service(resource("/").guard(guard::Post()).to(index))
+            .service(resource("/").guard(guard::Post()).to(private_index))
+            .service(resource("/public").guard(guard::Post()).to(public_index))
             .service(
                 resource("/")
                     .guard(guard::Get())

@@ -3,7 +3,7 @@ import { RouteDefinition } from "@solidjs/router";
 
 export const router: RouteDefinition[] = [
   {
-    path: "/",
+    path: "/my",
     component: lazy(() => import("../components/globals/LayoutPrivate")),
     children: [
       {

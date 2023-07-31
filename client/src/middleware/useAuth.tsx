@@ -16,14 +16,17 @@ export const AuthContext = createContext<{
   hide: () => void;
   login: (props: LoginForm) => void;
   logout: () => void;
+  jump: () => boolean;
 }>();
 
 export const AppProvider: Component<{ children: JSXElement }> = (props) => {
   const [isAuthed, setIsAuthed] = createSignal(false);
   const [user, setUser] = createSignal<Profile | undefined>();
   const [isHide, setHide] = createSignal(false);
+  const [isJump, setIsJump] = createSignal(false);
 
-  createEffect(() => {
+  let refetchUser = () => {
+    setIsJump(false);
     axios
       .get("http://localhost:8000/api/me", {
         withCredentials: true,
@@ -33,14 +36,21 @@ export const AppProvider: Component<{ children: JSXElement }> = (props) => {
         setUser(() => res.data.data.user);
         setIsAuthed(true);
       })
-      .catch((_e) => setIsAuthed(false));
-  });
+      .catch((_e) => {
+        setIsAuthed(false);
+      });
+    setTimeout(() => {
+      setIsJump(true);
+    }, 500);
+  };
+  createEffect(() => {refetchUser()});
 
   const authContext = {
     user: user,
     isAuthed,
     hide: () => setHide(true),
     login: (props: LoginForm) => {
+      setIsJump(false);
       axios
         .post(
           "http://localhost:8000/api/signin",
@@ -52,13 +62,18 @@ export const AppProvider: Component<{ children: JSXElement }> = (props) => {
         .then((res) => {
           if (res.data.status === "success") {
             setIsAuthed(true);
+            refetchUser()
           }
         })
         .catch((_e) => {
           setIsAuthed(false);
         });
+      setTimeout(() => {
+        setIsJump(true);
+      }, 500);
     },
     logout: () => setIsAuthed(false),
+    jump: isJump,
   };
 
   return (

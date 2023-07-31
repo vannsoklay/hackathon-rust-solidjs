@@ -20,7 +20,7 @@ const PrivateLayout = () => {
         fallback={<Login hide={hide} setHide={setHide} />}
       >
         <Container>
-          {pathname().split("/")[1] == "write" ? (
+          {pathname().split("/")[2] == "write" ? (
             <Outlet />
           ) : (
             <>

@@ -24,7 +24,7 @@ function NavbarPrivate() {
   return (
     <>
       <li>
-        <A href="/write">Write</A>
+        <A href="/my/write">Write</A>
       </li>
       <li>
         <A href="/notify">
@@ -50,7 +50,7 @@ function NavbarPrivate() {
         </A>
       </li>
       <li>
-        <A href="/profile">
+        <A href="/my/profile">
           <div class="h-10 w-10 cursor-pointer border border-slate-800 rounded-full bg-coffee-2 relative">
             <label class="flex justify-center items-center h-full">
               <img
